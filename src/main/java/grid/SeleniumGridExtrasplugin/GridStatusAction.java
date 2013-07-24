@@ -7,15 +7,15 @@ import hudson.model.RootAction;
 public class GridStatusAction implements RootAction{
 
 	public String getIconFileName() {
-	 return "setting.png";
+	 return "up.png";
 	}
 
 	public String getDisplayName() {
-		return "Grid status";
+		return "Selenium Grid Extras";
 	}
 
 	public String getUrlName() {
-		return "/gridStatus";
+		return "/gridExtras";
 	}
 
 }

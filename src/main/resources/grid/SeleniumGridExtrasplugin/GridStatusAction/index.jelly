@@ -3,7 +3,7 @@
   <l:layout title="UI Samples">
     <l:main-panel>
       <h1>Selenium Grid Nodes</h1>
-       <iframe src="http://localhost:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />
+       <iframe src="http://buildmaster1.snc1:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />
       <br/>
 
     </l:main-panel>

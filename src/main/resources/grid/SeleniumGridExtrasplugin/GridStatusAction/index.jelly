@@ -1,11 +1,36 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:s="/lib/samples">
-  <l:layout title="UI Samples">
-    <l:main-panel>
-      <h1>Selenium Grid Nodes</h1>
-       <iframe src="http://buildmaster1.snc1:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />
-      <br/>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:s="/lib/samples">
+    <l:layout title="UI Samples">
+        <l:main-panel>
+            <h1>Selenium Grid Nodes</h1>
+            <!--<iframe src="http://buildmaster1.snc1:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />-->
 
-    </l:main-panel>
-  </l:layout>
+
+            <j:if test="${it.hubRunning()}">
+                Hub is running
+                <j:if test="${it.initializeNodeInfoCollector()}">
+                    <br />
+                    Servlet is running
+                </j:if>
+
+
+
+                <!--<ul>-->
+                    <!--<j:forEach items="${it.foo()}" var="bar" indexVar="i">-->
+                        <!--<li>"${bar.toString()}"</li>-->
+                    <!--</j:forEach>-->
+                <!--</ul>-->
+
+
+            </j:if>
+
+            <j:if test="${!it.hubRunning()}">
+                   Hub is not running
+                   "${it.hubUrl()}"
+            </j:if>
+
+
+        </l:main-panel>
+    </l:layout>
 </j:jelly>

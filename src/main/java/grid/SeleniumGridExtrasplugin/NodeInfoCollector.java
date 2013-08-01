@@ -35,51 +35,23 @@
  * Time: 4:06 PM
  */
 
+
 package grid.SeleniumGridExtrasplugin;
 
-import java.util.LinkedList;
-import java.util.List;
+public class NodeInfoCollector {
 
-import hudson.Extension;
-import hudson.model.RootAction;
+  private String servletUrl;
 
-@Extension
-public class GridStatusAction implements RootAction {
-
-  private NodeInfoCollector nodeInfo;
-
-  public String getIconFileName() {
-    return "up.png";
+  public NodeInfoCollector(String url){
+    servletUrl = url;
   }
 
-  public String getDisplayName() {
-    return "Selenium Grid Extras";
+  public String getUrl(){
+    return servletUrl;
   }
 
-  public String getUrlName() {
-    return "/gridExtras";
-  }
-
-
-  public boolean hasNodes(){
-       return true;
-  }
-
-  public String hubUrl(){
-    return Config.getHubUrl();
-  }
-
-  public boolean hubRunning(){
-    return HttpWrapper.hostReachable(Config.getHubUrl(), 2000);
-  }
-
-  public boolean initializeNodeInfoCollector(){
-    nodeInfo = new NodeInfoCollector(Config.getInfoServletUrl());
-    return nodeInfo.infoServletRunning();
-  }
-
-  public NodeInfoCollector getNodeInfo(){
-    return nodeInfo;
+  public boolean infoServletRunning(){
+    return true;
   }
 
 }

@@ -37,49 +37,34 @@
 
 package grid.SeleniumGridExtrasplugin;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeoutException;
 
-import hudson.Extension;
-import hudson.model.RootAction;
+public class HttpWrapper {
 
-@Extension
-public class GridStatusAction implements RootAction {
+  public static boolean hostReachable(String url, int timeout) {
+    url =
+        url.replaceFirst("https",
+                         "http"); // Otherwise an exception may be thrown on invalid SSL certificates.
 
-  private NodeInfoCollector nodeInfo;
-
-  public String getIconFileName() {
-    return "up.png";
-  }
-
-  public String getDisplayName() {
-    return "Selenium Grid Extras";
-  }
-
-  public String getUrlName() {
-    return "/gridExtras";
-  }
-
-
-  public boolean hasNodes(){
-       return true;
-  }
-
-  public String hubUrl(){
-    return Config.getHubUrl();
-  }
-
-  public boolean hubRunning(){
-    return HttpWrapper.hostReachable(Config.getHubUrl(), 2000);
-  }
-
-  public boolean initializeNodeInfoCollector(){
-    nodeInfo = new NodeInfoCollector(Config.getInfoServletUrl());
-    return nodeInfo.infoServletRunning();
-  }
-
-  public NodeInfoCollector getNodeInfo(){
-    return nodeInfo;
+    boolean reachable = false;
+    try {
+      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+      connection.setConnectTimeout(timeout);
+      connection.setReadTimeout(timeout);
+      connection.setRequestMethod("HEAD");
+      int responseCode = connection.getResponseCode();
+      if (responseCode == 200) {
+        reachable = true;
+      }
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+    return reachable;
   }
 
 }

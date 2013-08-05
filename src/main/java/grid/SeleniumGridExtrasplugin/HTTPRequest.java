@@ -37,37 +37,95 @@
 
 package grid.SeleniumGridExtrasplugin;
 
-import java.io.IOException;
+
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+
+
+import java.io.BufferedReader;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.Socket;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeoutException;
 
-public class HttpWrapper {
 
-  public static boolean hostReachable(String url, int timeout) {
-    url =
-        url.replaceFirst("https",
-                         "http"); // Otherwise an exception may be thrown on invalid SSL certificates.
+public abstract class HTTPRequest {
 
-    boolean reachable = false;
-    try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-      connection.setConnectTimeout(timeout);
-      connection.setReadTimeout(timeout);
-      connection.setRequestMethod("HEAD");
-      int responseCode = connection.getResponseCode();
-      if (responseCode == 200) {
-        reachable = true;
-      }
-    } catch (IOException exception) {
-      exception.printStackTrace();
+  private URL url;
+  private String error;
+  private String contentType;
+  private String body;
+
+
+  public boolean errorsOccurred() {
+    if (getError() == null || getError().equals("") || getError().isEmpty()) {
+      return false;
+    } else {
+      return true;
     }
-    return reachable;
   }
 
+  public void setUrl(String urlString) {
+    try {
+      url = new URL(urlString);
+    } catch (MalformedURLException e) {
+      setError(e.toString());
+    }
+  }
 
+  public URL getUrl() {
+    return url;
+  }
+
+  public void setError(String errorString) {
+    error = errorString;
+  }
+
+  public String getError() {
+    return error;
+  }
+
+  public void setContentType(String content) {
+    System.out.println(content);
+    contentType = content;
+  }
+
+  public String getContentType() {
+    return contentType;
+  }
+
+  public void processConnection(URLConnection conn) {
+    setContentType(conn.getContentType());
+    System.out.println(getContentType());
+  }
+
+  public void processContent(InputStream content) {
+    try {
+      BufferedReader br = new BufferedReader(new InputStreamReader(content));
+
+      String line = null;
+      StringBuffer sb = new StringBuffer();
+      while ((line = br.readLine()) != null) {
+        sb.append(line);
+      }
+      setBody(sb.toString());
+    } catch (IOException e) {
+      setError(e.toString());
+    }
+    System.out.println(getBody());
+  }
+
+  public void setBody(String bodyString) {
+    body = bodyString;
+  }
+
+  public String getBody() {
+    return body;
+  }
+
+  public JsonObject getJsonBody() {
+    return (JsonObject) new JsonParser().parse(getBody());
+  }
 }

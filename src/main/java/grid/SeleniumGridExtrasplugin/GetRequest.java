@@ -35,53 +35,38 @@
  * Time: 4:06 PM
  */
 
-
 package grid.SeleniumGridExtrasplugin;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.URLConnection;
 
-import java.util.LinkedList;
-import java.util.List;
+public class GetRequest extends HTTPRequest {
 
-public class NodeInfoCollector {
+  public GetRequest(String url) {
 
-  private HTTPRequest req;
-  private List<Node> nodes;
-
-  public NodeInfoCollector(String url) {
-    req = new GetRequest(url);
-
-    if (infoServletRunning()) {
-      setupNodeList();
-    }
-  }
-
-  public void setupNodeList() {
-    JsonObject request = req.getJsonBody();
-    JsonArray totalProxies = (JsonArray) request.get("TotalProxies");
-    nodes = new LinkedList<Node>();
-
-    if (totalProxies != null) {
-      for (int i = 0; i < totalProxies.size(); i++) {
-        JsonObject proxy = (JsonObject) totalProxies.get(i);
-        nodes.add(new Node(proxy));
-      }
-
+    setUrl(url);
+    if (!errorsOccurred()) {
+      doWork();
     }
 
   }
 
-  public List<Node> getNodes(){
-    return nodes;
-  }
+  private void doWork() {
 
-  public boolean infoServletRunning() {
-    if (req.errorsOccurred() || !req.getContentType().equals("application/json;charset=UTF-8")) {
-      return false;
+    InputStream is;
+    try {
+      URLConnection conn = getUrl().openConnection();
+      is = (InputStream) conn.getContent();
+
+      processConnection(conn);
+      processContent(is);
+
+    } catch (IOException e) {
+      setError(e.toString());
     }
 
-    return true;
   }
+
 
 }

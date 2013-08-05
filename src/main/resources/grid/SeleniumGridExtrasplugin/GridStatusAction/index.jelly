@@ -8,26 +8,81 @@
 
 
             <j:if test="${it.hubRunning()}">
-                Hub is running
                 <j:if test="${it.initializeNodeInfoCollector()}">
-                    <br />
-                    Servlet is running
+
+                    <br/>
+                    <j:forEach items="${it.getNodeInfo().getNodes()}" var="node" indexVar="i">
+
+                        <style>
+                            .grid_node {border: 1px solid;
+                            width: 400px;}
+                        </style>
+
+
+                        <div class="grid_node">
+                            <div class="node_ip">${node.getIp()}</div>
+                            <img class="screenshot"
+                                 src="data:image/png;base64,${node.getScreenshot()}"/>
+                            <dl class="system_info">
+                                <dt>Host</dt>
+                                <dd>${node.getHostNetworkInfo().get(0)} -
+                                    ${node.getHostNetworkInfo().get(1)}
+                                </dd>
+
+
+                                <dt>Ram</dt>
+                                <dd>
+                                    <dl class="ram">
+                                        <dt>Free</dt>
+                                        <dd>${node.getFreeRam().get(0)}</dd>
+                                        <dt>Total</dt>
+                                        <dd>${node.getFreeRam().get(1)}</dd>
+                                    </dl>
+                                </dd>
+                                <dt>HD(s)</dt>
+                                <dd>
+                                    <dl>
+                                        <j:forEach items="${node.getHDInfo()}" var="hd"
+                                                   indexVar="a">
+                                            <dt>${hd.get("drive")}</dt>
+                                            <dd>
+                                                <dl>
+                                                    <dt>Free</dt>
+                                                    <dd>${hd.get("free")}</dd>
+                                                    <dt>Total</dt>
+                                                    <dd>${hd.get("size")}</dd>
+                                                </dl>
+                                            </dd>
+                                        </j:forEach>
+                                    </dl>
+                                </dd>
+
+                                <dd>
+
+                                </dd>
+
+
+                            </dl>
+
+
+                        </div>
+                    </j:forEach>
+
                 </j:if>
 
 
-
                 <!--<ul>-->
-                    <!--<j:forEach items="${it.foo()}" var="bar" indexVar="i">-->
-                        <!--<li>"${bar.toString()}"</li>-->
-                    <!--</j:forEach>-->
+                <!--<j:forEach items="${it.foo()}" var="bar" indexVar="i">-->
+                <!--<li>"${bar.toString()}"</li>-->
+                <!--</j:forEach>-->
                 <!--</ul>-->
 
 
             </j:if>
 
             <j:if test="${!it.hubRunning()}">
-                   Hub is not running
-                   "${it.hubUrl()}"
+                Hub is not running
+                "${it.hubUrl()}"
             </j:if>
 
 

@@ -72,6 +72,18 @@ public class NodeInfoCollector {
 
   }
 
+  public int getNodeCount(){
+    return nodes.size();
+  }
+
+  public String getErrorFromRequest(){
+    return req.getError();
+  }
+
+  public String getRequestContentType(){
+    return req.getContentType();
+  }
+
   public List<Node> getNodes(){
     return nodes;
   }

@@ -7,10 +7,27 @@
             <!--<iframe src="http://buildmaster1.snc1:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />-->
 
 
+            <j:if test="${!it.hubRunning()}">Hub is not Running</j:if>
+
+
             <j:if test="${it.hubRunning()}">
+                <j:if test="${!it.initializeNodeInfoCollector()}">
+                    Something didn't initialize properly
+                    <br />
+                    ${it.getNodeInfo().getErrorFromRequest()}
+                    <br />
+                    <hr />
+                    <br />
+                    ${it.getNodeInfo().getRequestContentType()}
+                </j:if>
                 <j:if test="${it.initializeNodeInfoCollector()}">
 
+                    Nodes Found: ${it.getNodeInfo.getNodeCount()}
+
                     <br/>
+
+
+
                     <j:forEach items="${it.getNodeInfo().getNodes()}" var="node" indexVar="i">
 
                         <style>

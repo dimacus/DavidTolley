@@ -71,7 +71,7 @@ public class Node {
   }
 
   public String getScreenshot() {
-    String screenshotUrl = getHostBaseUrl() + "/screenshot?width=400&height=300&keep=false";
+    String screenshotUrl = getHostBaseUrl() + "/screenshot?width=150&height=100&keep=false";
     JsonObject screen = new GetRequest(screenshotUrl).getJsonBody();
 
     JsonArray image = (JsonArray) screen.get("image");

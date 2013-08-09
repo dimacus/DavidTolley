@@ -37,11 +37,21 @@
 
 package grid.SeleniumGridExtrasplugin;
 
-import java.util.LinkedList;
-import java.util.List;
 
+import com.google.gson.JsonObject;
+
+import grid.SeleniumGridExtrasplugin.nodes.GridNode;
+import grid.SeleniumGridExtrasplugin.nodes.GridNodes;
+import grid.SeleniumGridExtrasplugin.proxies.Proxy;
 import hudson.Extension;
 import hudson.model.RootAction;
+
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
+
+import java.io.IOException;
+import java.util.Map;
+
 
 @Extension
 public class GridStatusAction implements RootAction {
@@ -61,24 +71,61 @@ public class GridStatusAction implements RootAction {
   }
 
 
-  public boolean hasNodes(){
-       return true;
+  public String doNodes(StaplerRequest req, StaplerResponse rsp) {
+    rsp.setContentType("application/json");
+
+    GridNodes nodes = new GridNodes(Config.getInfoServletUrl());
+    return nodes.getJson().toString();
   }
 
-  public String hubUrl(){
+
+  public String doScreenshot(StaplerRequest req, StaplerResponse rsp) {
+    rsp.setContentType("application/json");
+
+
+    System.out.println(req.getParameterMap());
+    if (req.hasParameter("ip")) {
+
+      String height = req.hasParameter("height") ? req.getParameter("height").toString() : "100";
+      String width = req.hasParameter("width") ? req.getParameter("width").toString() : "200";
+      String ip = req.getParameter("ip");
+
+      GridNode node = new GridNode(ip);
+      return node.getScreenshot(height, width).toString();
+    } else {
+      JsonObject error = new JsonObject();
+      error.addProperty("error", "ip param is required");
+      return error.toString();
+    }
+
+
+  }
+
+
+  public void doTest1(StaplerRequest req, StaplerResponse rsp) throws IOException {
+    System.out.println("Dima doTest1");
+    System.out.println("Dima " + req.getContextPath());
+    rsp.sendRedirect2(req.getContextPath() + "/blah");
+  }
+
+  public boolean hasNodes() {
+    return true;
+  }
+
+  public String hubUrl() {
     return Config.getHubUrl();
   }
 
-  public boolean hubRunning(){
+  public boolean hubRunning() {
     return HttpWrapper.hostReachable(Config.getHubUrl(), 2000);
   }
 
-  public boolean initializeNodeInfoCollector(){
+  public boolean initializeNodeInfoCollector() {
     nodeInfo = new NodeInfoCollector(Config.getInfoServletUrl());
     return nodeInfo.infoServletRunning();
   }
 
-  public NodeInfoCollector getNodeInfo(){
+  public NodeInfoCollector getNodeInfo() {
     return nodeInfo;
   }
 

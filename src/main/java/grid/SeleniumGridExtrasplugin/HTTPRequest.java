@@ -71,6 +71,7 @@ public abstract class HTTPRequest {
     try {
       url = new URL(urlString);
     } catch (MalformedURLException e) {
+      e.printStackTrace();
       setError(e.toString());
     }
   }

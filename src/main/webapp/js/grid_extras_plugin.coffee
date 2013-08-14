@@ -59,16 +59,14 @@ addPreviewNode = (node) ->
 
 
 setupPreviewNodes = (callback) ->
-  nodeArray = []
   jQuery.ajax curentUrl + "nodes",
                 type: 'GET'
                 dataType: 'json'
                 error: (jqXHR, textStatus, errorThrown) ->
                   alert "Something went wrong getting nodes - AJAX Error:#{textStatus}"
                 success: (returnedNodes, textStatus, jqXHR) ->
-                  for node in returnedNodes
-                    nodeArray.push node
                     callback(returnedNodes)
+
 
 
 
@@ -78,6 +76,7 @@ jQuery('document').ready ->
 
   setupPreviewNodes (nodes) ->
     for node in nodes
+      console.log "Working on " + node.host
       addPreviewNode (node)
 
 

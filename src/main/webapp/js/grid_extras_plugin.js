@@ -72,8 +72,6 @@
   };
 
   setupPreviewNodes = function(callback) {
-    var nodeArray;
-    nodeArray = [];
     return jQuery.ajax(curentUrl + "nodes", {
       type: 'GET',
       dataType: 'json',
@@ -81,14 +79,7 @@
         return alert("Something went wrong getting nodes - AJAX Error:" + textStatus);
       },
       success: function(returnedNodes, textStatus, jqXHR) {
-        var node, _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = returnedNodes.length; _i < _len; _i++) {
-          node = returnedNodes[_i];
-          nodeArray.push(node);
-          _results.push(callback(returnedNodes));
-        }
-        return _results;
+        return callback(returnedNodes);
       }
     });
   };
@@ -99,6 +90,7 @@
       _results = [];
       for (_i = 0, _len = nodes.length; _i < _len; _i++) {
         node = nodes[_i];
+        console.log("Working on " + node.host);
         _results.push(addPreviewNode(node));
       }
       return _results;

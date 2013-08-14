@@ -6,6 +6,10 @@
             <h1>Selenium Grid Nodes</h1>
             <!--<iframe src="http://buildmaster1.snc1:4444/grid/admin/SeleniumGridExtrasServlet" height="90%" width="100%" />-->
 
+            <script type="text/javascript">
+                window.GridHubBaseUrl = "${it.GridHubBaseUrl}"
+            </script>
+
             <script type="text/javascript" src="${rootURL}/plugin/SeleniumGridExtras-plugin/js/jquery-1.7.2.min.js"/>
             <script type="text/javascript" src="${rootURL}/plugin/SeleniumGridExtras-plugin/js/string_functions.js" />
             <script type="text/javascript" src="${rootURL}/plugin/SeleniumGridExtras-plugin/js/location_finders.js" />

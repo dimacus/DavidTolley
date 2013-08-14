@@ -71,6 +71,15 @@ public class GridStatusAction implements RootAction {
   }
 
 
+  public String getGridHubBaseUrl() {
+    return Config.getHubUrl();
+  }
+
+  public Object getDynamic(String token, StaplerRequest req, StaplerResponse rsp) {
+    return null;
+  }
+
+
   public String doNodes(StaplerRequest req, StaplerResponse rsp) {
     rsp.setContentType("application/json");
 
@@ -81,7 +90,6 @@ public class GridStatusAction implements RootAction {
 
   public String doScreenshot(StaplerRequest req, StaplerResponse rsp) {
     rsp.setContentType("application/json");
-
 
     System.out.println(req.getParameterMap());
     if (req.hasParameter("ip")) {
@@ -99,34 +107,6 @@ public class GridStatusAction implements RootAction {
     }
 
 
-  }
-
-
-  public void doTest1(StaplerRequest req, StaplerResponse rsp) throws IOException {
-    System.out.println("Dima doTest1");
-    System.out.println("Dima " + req.getContextPath());
-    rsp.sendRedirect2(req.getContextPath() + "/blah");
-  }
-
-  public boolean hasNodes() {
-    return true;
-  }
-
-  public String hubUrl() {
-    return Config.getHubUrl();
-  }
-
-  public boolean hubRunning() {
-    return HttpWrapper.hostReachable(Config.getHubUrl(), 2000);
-  }
-
-  public boolean initializeNodeInfoCollector() {
-    nodeInfo = new NodeInfoCollector(Config.getInfoServletUrl());
-    return nodeInfo.infoServletRunning();
-  }
-
-  public NodeInfoCollector getNodeInfo() {
-    return nodeInfo;
   }
 
 }

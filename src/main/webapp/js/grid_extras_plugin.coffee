@@ -46,14 +46,21 @@ addTestSlots = (node) ->
 
   jQuery(getNodeInfoDiv(node.host)).append gridTestSlots.getHtml()
 
+addTestSlotsStatus = (node) ->
+  status = "idle"
 
+  for slot in node.slots
+    if slot.session != ""
+      status = "busy"
+
+  jQuery(getNodeInfoDiv(node.host)).append "<dt>Status</dt><dd>" + status + "</dd>"
 
 addPreviewNode = (node) ->
   addPreviewDiv node
   addTemporaryComputerIcon node.host
   addHostNameToPreviewDiv node.host
   addSmallScreenshotToPreview node.host
-  addTestSlots node
+  addTestSlotsStatus node
   hideLoadingSpinnerFromPreview node.host
 
 

@@ -105,8 +105,29 @@ public class GridStatusAction implements RootAction {
       error.addProperty("error", "ip param is required");
       return error.toString();
     }
-
-
   }
+
+  public String doFullScreenShot(StaplerRequest req, StaplerResponse rsp){
+    rsp.setContentType("text/html");
+
+    System.out.println(req.getParameterMap());
+    if (req.hasParameter("ip")) {
+      String ip = req.getParameter("ip");
+
+      GridNode node = new GridNode(ip);
+
+      JsonObject image = node.getScreenshot("100", "100");
+
+      String sanitizedImage = image.get("image").toString();
+
+      sanitizedImage = sanitizedImage.replaceAll("[\\[\\]\"\\\\]", "");
+
+//      http://localhost:8080/gridExtras/fullScreenShot?ip=10.60.113.125
+      return "<img class='actual-screenshot' src='data:image/png;base64," + sanitizedImage + "'>";
+    } else {
+      return "<div class='full-screenshot'></div>";
+    }
+  }
+
 
 }

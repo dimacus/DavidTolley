@@ -44,19 +44,31 @@ import grid.SeleniumGridExtrasplugin.nodes.GridNode;
 import grid.SeleniumGridExtrasplugin.nodes.GridNodes;
 import grid.SeleniumGridExtrasplugin.proxies.Proxy;
 import hudson.Extension;
+import hudson.Plugin;
+import hudson.model.Action;
+import hudson.model.Actionable;
+import hudson.model.Describable;
+import hudson.model.Descriptor;
+import hudson.model.Hudson;
 import hudson.model.RootAction;
 
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 
 
 @Extension
-public class GridStatusAction implements RootAction {
+public class GridStatusAction extends Plugin implements Action, RootAction {
 
-  private NodeInfoCollector nodeInfo;
+
+//  @SuppressWarnings("unchecked")
+//  public Descriptor<GridStatus> getDescriptor() {
+//    return Hudson.getInstance().getDescriptorOrDie(getClass());
+//  }
 
   public String getIconFileName() {
     return "up.png";
@@ -71,14 +83,17 @@ public class GridStatusAction implements RootAction {
   }
 
 
-  public String getGridHubBaseUrl() {
-    return Config.getHubUrl();
-  }
-
   public Object getDynamic(String token, StaplerRequest req, StaplerResponse rsp) {
     return null;
   }
 
+  @Override
+  public void postInitialize() throws Exception {
+    load();
+
+    System.out.println("DIMA!!!!!!!!!!!!!!!");
+
+  }
 
   public String doNodes(StaplerRequest req, StaplerResponse rsp) {
     rsp.setContentType("application/json");
@@ -86,7 +101,6 @@ public class GridStatusAction implements RootAction {
     GridNodes nodes = new GridNodes(Config.getInfoServletUrl());
     return nodes.getJson().toString();
   }
-
 
   public String doScreenshot(StaplerRequest req, StaplerResponse rsp) {
     rsp.setContentType("application/json");
@@ -107,27 +121,7 @@ public class GridStatusAction implements RootAction {
     }
   }
 
-  public String doFullScreenShot(StaplerRequest req, StaplerResponse rsp){
-    rsp.setContentType("text/html");
+  private void startGridExtrasService(String pathToJar){
 
-    System.out.println(req.getParameterMap());
-    if (req.hasParameter("ip")) {
-      String ip = req.getParameter("ip");
-
-      GridNode node = new GridNode(ip);
-
-      JsonObject image = node.getScreenshot("100", "100");
-
-      String sanitizedImage = image.get("image").toString();
-
-      sanitizedImage = sanitizedImage.replaceAll("[\\[\\]\"\\\\]", "");
-
-//      http://localhost:8080/gridExtras/fullScreenShot?ip=10.60.113.125
-      return "<img class='actual-screenshot' src='data:image/png;base64," + sanitizedImage + "'>";
-    } else {
-      return "<div class='full-screenshot'></div>";
-    }
   }
-
-
 }

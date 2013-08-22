@@ -40,7 +40,8 @@ package grid.SeleniumGridExtrasplugin;
 public class Config {
 
   public static String getHubHost(){
-    return "buildmaster1.snc1";
+    return "localhost";
+//    return "buildmaster1.snc1";
   }
 
   public static int getHubPort(){
@@ -53,6 +54,10 @@ public class Config {
 
   public static String getInfoServletUrl(){
     return getHubUrl() + "/grid/admin/ProxyStatusJsonServlet";
+  }
+
+  public static String getGridExtrasJarPath(){
+    return "";
   }
 
 

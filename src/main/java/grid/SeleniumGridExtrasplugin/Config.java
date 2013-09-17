@@ -40,8 +40,8 @@ package grid.SeleniumGridExtrasplugin;
 public class Config {
 
   public static String getHubHost(){
-    return "localhost";
-//    return "buildmaster1.snc1";
+//    return "localhost";
+    return "buildmaster1.snc1";
   }
 
   public static int getHubPort(){

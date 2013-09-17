@@ -91,7 +91,14 @@ public class GridStatusAction extends Plugin implements Action, RootAction {
   public void postInitialize() throws Exception {
     load();
 
-    System.out.println("DIMA!!!!!!!!!!!!!!!");
+    System.out.println("Starting to initialize Grid Extras");
+
+//    String command = "java -jar /Users/dima/projects/grid/Selenium-Grid-Extras/SeleniumGridExtras/target/SeleniumGridExtras-1.1.9-SNAPSHOT-jar-with-dependencies.jar &";
+
+//    System.out.println(ExecuteRuntime.execRuntime(command, false));
+
+
+//    System.out.println("Grid Extras - log can be found");
 
   }
 

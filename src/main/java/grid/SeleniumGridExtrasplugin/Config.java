@@ -41,6 +41,7 @@ public class Config {
 
   public static String getHubHost(){
 //    return "localhost";
+//    return "10.2.62.11"; //Jenkins in berlin
     return "buildmaster1.snc1";
   }
 

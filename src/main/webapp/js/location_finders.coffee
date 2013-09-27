@@ -19,3 +19,6 @@ window.getPreviewSpinner = (ip) ->
 
 window.getPreviewTempScreenshot = (ip) ->
   getPreviewDiv(ip) + " .small-screenshot .temp-screenshot"
+
+window.getLargeScreenshotDiv = ->
+  "#largeScreenshot"

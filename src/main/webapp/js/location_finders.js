@@ -30,4 +30,8 @@
     return getPreviewDiv(ip) + " .small-screenshot .temp-screenshot";
   };
 
+  window.getLargeScreenshotDiv = function() {
+    return "#largeScreenshot";
+  };
+
 }).call(this);

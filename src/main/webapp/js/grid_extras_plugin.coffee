@@ -25,8 +25,8 @@ addLoadingSpinnerToPreview = (node) ->
 hideLoadingSpinnerFromPreview = (ip) ->
   jQuery(getPreviewSpinner(ip)).hide()
 
-addSmallScreenshotToPreview = (ip) ->
-  jQuery.ajax curentUrl + "screenshot?width=200&height=100&keep=false&ip=" + ip,
+addSmallScreenshotToPreview = (ip, width, height) ->
+  jQuery.ajax curentUrl + "screenshot?width=" + width + "&height=" + height + "&keep=false&ip=" + ip,
     type: 'GET',
     dataType: 'json',
     success: (screenshot, textStatus, jqXHR) ->
@@ -36,6 +36,19 @@ addSmallScreenshotToPreview = (ip) ->
       actualScreenshot = actualScreenshot + "' >"
       jQuery(getPreviewTempScreenshot(ip)).hide()
       jQuery(getSmallScreenshotDiv(ip)).append actualScreenshot
+
+
+addFullScreenshot = (ip, width, height) ->
+  jQuery.ajax curentUrl + "screenshot?width=" + width + "&height=" + height + "&keep=false&ip=" + ip,
+    type: 'GET',
+    dataType: 'json',
+    success: (screenshot, textStatus, jqXHR) ->
+
+      actualScreenshot = "<img class='full-screenshot' src='data:image/png;base64,"
+      actualScreenshot = actualScreenshot + sanitizeScreenshot(screenshot.image)
+      actualScreenshot = actualScreenshot + "' >"
+      jQuery(getLargeScreenshotDiv() + " img").remove()
+      jQuery(getLargeScreenshotDiv()).append actualScreenshot
 
 
 addTestSlots = (node) ->
@@ -55,11 +68,20 @@ addTestSlotsStatus = (node) ->
 
   jQuery(getNodeInfoDiv(node.host)).append "<dt>Status</dt><dd>" + status + "</dd>"
 
+attachFullScreenshotTrigger = (ip) ->
+  console.log "attaching screenshot get event to " + ip
+  jQuery(getPreviewDiv(ip)).click ->
+    console.log "Clicked on " + ip + " now getting full screenshot"
+    addFullScreenshot ip, 768, 1024
+
+
+
 addPreviewNode = (node) ->
   addPreviewDiv node
   addTemporaryComputerIcon node.host
   addHostNameToPreviewDiv node.host
-  addSmallScreenshotToPreview node.host
+  addSmallScreenshotToPreview node.host, 200, 100
+  attachFullScreenshotTrigger node.host
   addTestSlotsStatus node
   hideLoadingSpinnerFromPreview node.host
 
